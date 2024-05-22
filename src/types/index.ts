@@ -35,7 +35,12 @@ export type IData = {
     email : string;
     pw : string;
     cp : string;
-  }
+}
+
+export type LData = {
+    email : string;
+    pw : string;
+}
 
 export type IType = {
     type : string;
@@ -72,4 +77,5 @@ export type SIGNUP_TYPE = {
 export type USER_TYPE = {
     email : string;
     name : string;
+    id : string;
 }

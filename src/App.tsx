@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { RootLayout, AuthLayout } from "@/layouts";
+import { Toaster } from "@/components/ui/toaster";
 import { Home, About, Category, SignIn, SignUp, Checkout } from "@/pages";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/checkout" element={<Checkout />} />
         </Route>
       </Routes>
+      <Toaster />
     </>
   );
 };

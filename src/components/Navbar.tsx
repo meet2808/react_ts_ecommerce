@@ -1,10 +1,23 @@
+import { useAuth } from "@/context/useAuthanticate";
 import Search from "./Search";
 import MobileView from "./MobileView";
 import CartModel from "./CartModel";
-import { BiSolidUser } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { BiSolidUser, BiLogOut } from "react-icons/bi";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import authService from "@/appwrite/Auth";
 
 const Navbar = () => {
+  const { isLoggedIn, setIsLoggedIn, user, isAuthenticated, setIsAuthenticated } = useAuth();
+  console.log("isloggedIn in navbar", isLoggedIn, user)
+  const navigate = useNavigate();
   return (
     <nav className="relative py-4 px-5 flex items-center justify-between">
       <div className="block flex-none md:hidden">
@@ -13,10 +26,7 @@ const Navbar = () => {
 
       {/* Logo Section */}
       {/* <div className="uppercase font-bold ml-5 md :mr-0">productmart</div> */}
-      <Link
-        className="uppercase font-bold ml-5 md:mr-0 no-underline"
-        to={"/"}
-      >
+      <Link className="uppercase font-bold ml-5 md:mr-0 no-underline" to={"/"}>
         productmart
       </Link>
 
@@ -48,12 +58,43 @@ const Navbar = () => {
           <CartModel quantity={1} />
         </li>
         <li>
-          <Link
-            to={"#"}
-            className={`text-[20] h-full text-black-500 text-sm`}
-          >
-            <BiSolidUser size={25} />
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <BiSolidUser size={25} className="cursor-pointer" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              {isAuthenticated ? (
+                <>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>My Orders</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      authService.logOut();
+                      setIsLoggedIn(false);
+                      setIsAuthenticated(false);
+                      navigate("/auth/sign-in");
+                    }}
+                    className="cursor-pointer flex gap-2"
+                  >
+                    <BiLogOut /> Log Out
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => {
+                      navigate("/auth/sign-in");
+                    }}
+                  >
+                    Sign In
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </li>
       </ul>
     </nav>

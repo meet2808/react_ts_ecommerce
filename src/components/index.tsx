@@ -12,3 +12,4 @@ export { default as SuggestedProducts } from "./SuggestedProducts";
 export { default as Sidebar } from "./Sidebar";
 export { default as Input } from "./Input";
 export { default as Dropdown } from "./Dropdown";
+export { default as Loader } from "./Loader";
