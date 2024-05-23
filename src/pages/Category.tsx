@@ -1,19 +1,29 @@
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import { Sidebar, ProductCard } from "@/components";
-import img from "@/assets/images/laptop.png";
+import { PTYPE } from "@/types";
 
 const Category = () => {
   let { categoryName } = useParams();
+  const [products, setProducts] = useState<PTYPE>([]);
 
   return (
     <section className="flex flex-col lg:flex-row md:flex-col sm:flex-col p-4 gap-14">
-      <Sidebar />
+      <Sidebar setProducts={setProducts} />
 
       <div className="flex flex-col gap-2">
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-5 md:grid-cols-2">
-          <ProductCard title={"Hello"} img={img} price={1000} productId={123} />
-          <ProductCard title={"Hello"} img={img} price={1000} productId={123} />
-          <ProductCard title={"Hello"} img={img} price={1000} productId={123} />
+          {products?.map((product) => (
+            <Link to={`/detail/${product.id}`}>
+              <ProductCard
+                key={product.id}
+                title={product.title}
+                img={product.thumbnail}
+                price={product.price}
+                productId={product.id}
+              />
+            </Link>
+          ))}
         </div>
       </div>
     </section>

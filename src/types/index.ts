@@ -79,3 +79,17 @@ export type USER_TYPE = {
     name : string;
     id : string;
 }
+
+export type PTYPE = {
+    id : number;
+    title : string;
+    description : string;
+    price : number;
+    discountPercentage : number;
+    rating : number;
+    stock : number;
+    brand : string;
+    category : string;
+    thumbnail : string;
+    images : string[];
+}[]

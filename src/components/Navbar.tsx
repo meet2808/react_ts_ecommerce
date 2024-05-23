@@ -91,6 +91,17 @@ const Navbar = () => {
                   >
                     Sign In
                   </DropdownMenuItem>
+                  {/* <DropdownMenuItem
+                    onClick={() => {
+                      authService.logOut();
+                      setIsLoggedIn(false);
+                      setIsAuthenticated(false);
+                      navigate("/auth/sign-in");
+                    }}
+                    className="cursor-pointer flex gap-2"
+                  >
+                    <BiLogOut /> Log Out
+                  </DropdownMenuItem> */}
                 </>
               )}
             </DropdownMenuContent>
