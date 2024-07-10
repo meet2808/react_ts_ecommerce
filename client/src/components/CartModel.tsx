@@ -6,6 +6,10 @@ import Card from "./Card";
 import { Link } from "react-router-dom";
 import OpenCart from "./OpenCart";
 import { useCart } from "@/context/useCart";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+import conf from "@/conf/conf";
+import { useAuth } from "@/context/useAuthanticate";
 
 type PropType = {
   quantity: number;
@@ -16,15 +20,16 @@ const CartModel = ({ quantity }: PropType) => {
   const openCart = () => setIsModelOpen(true);
   const closeCart = () => setIsModelOpen(false);
   const userId = JSON.parse(localStorage.getItem("user")!)?.id;
-  const { cart, fetchCartItems, setCart, } = useCart();
+  const { cart, fetchCartItems, setCart } = useCart();
+  const { user } = useAuth();
   const items = cart.items;
 
   useEffect(() => {
     if (userId) {
-      fetchCartItems()
-    } else if(items.length === 0){
-      let cart = JSON.parse(localStorage.getItem('cart')!);
-      setCart(cart)
+      fetchCartItems();
+    } else if (items.length === 0) {
+      let cart = JSON.parse(localStorage.getItem("cart")!);
+      setCart(cart);
     }
   }, [userId, items.length]);
 
@@ -34,7 +39,25 @@ const CartModel = ({ quantity }: PropType) => {
     }
   }, [items]);
 
-  
+  const handleCheckOut = async () => {
+    setIsModelOpen(false);
+    
+    const data = { items }
+    await axios
+      .post(`${conf.dbApi}/payment/create-checkout-session`, data, {
+        headers: {
+          Authorization: `Bearer ${user.access_token}`,
+        },
+      })
+      .then((response) => {
+        console.log("response",response)
+        if (response.data.url) {
+          window.location.href = response.data.url;
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <button onClick={openCart}>
@@ -99,14 +122,16 @@ const CartModel = ({ quantity }: PropType) => {
                         <span>₹{parseFloat(cart.totalPrice).toFixed(2)}</span>
                       </div>
 
-                      <Link to="/checkout">
+                      {/* <Link to="/checkout"> */}
                         <button
                           className="relative flex w-[300px] items-center m-auto justify-center bg-blue-600 p-2 tracking-wide rounded-full text-white hover:opacity-90"
-                          onClick={() => setIsModelOpen(false)}
+                          onClick={() => {
+                            handleCheckOut();
+                          }}
                         >
                           <span>Proceed To Checkout</span>
                         </button>
-                      </Link>
+                      {/* </Link> */}
                     </div>
                   </div>
                 </>

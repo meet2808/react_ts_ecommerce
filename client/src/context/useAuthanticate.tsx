@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { USER_TYPE } from "@/types";
 import { useCart } from "./useCart";
+import { useOrder } from "./useOrder";
 
 export const INITIAL_USER = {
   email: "",
@@ -39,6 +40,7 @@ export const AuthenticateProvider = AuthContext.Provider;
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { fetchCartItems } = useCart();
+  const { fetchOrders } = useOrder();
   const [user, setUser] = useState<USER_TYPE>(INITIAL_USER);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -50,6 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(storedUser);
       setIsAuthenticated(true);
       fetchCartItems();
+      // fetchOrders();
     }
   }, []);
 

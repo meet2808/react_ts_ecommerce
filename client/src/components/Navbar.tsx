@@ -25,12 +25,13 @@ const Navbar = () => {
   const { cart } = useCart();
 
   const navigate = useNavigate();
-  
+
   const handleLogOut = () => {
     setIsLoggedIn(false);
     setIsAuthenticated(false);
     localStorage.setItem("user", JSON.stringify(INITIAL_USER));
     localStorage.removeItem("cart");
+    localStorage.removeItem("orders");
     navigate("/auth/sign-in");
   };
 
@@ -83,7 +84,14 @@ const Navbar = () => {
                 <>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>My Orders</DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => {
+                      navigate("/myorders");
+                    }}
+                  >
+                    My Orders
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
                       handleLogOut();
@@ -104,17 +112,6 @@ const Navbar = () => {
                   >
                     Sign In
                   </DropdownMenuItem>
-                  {/* <DropdownMenuItem
-                    onClick={() => {
-                      authService.logOut();
-                      setIsLoggedIn(false);
-                      setIsAuthenticated(false);
-                      navigate("/auth/sign-in");
-                    }}
-                    className="cursor-pointer flex gap-2"
-                  >
-                    <BiLogOut /> Log Out
-                  </DropdownMenuItem> */}
                 </>
               )}
             </DropdownMenuContent>

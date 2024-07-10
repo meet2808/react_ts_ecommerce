@@ -11,6 +11,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     const verifiedToken = jwt.verify(token, conf.JWT_TOKEN) as JwtPayload;
     if (verifiedToken) {
         let userId = verifiedToken.id;
+        console.log(userId)
         next();
     } else {
         return res.send(401).json({ message: "No Authorized Request" });

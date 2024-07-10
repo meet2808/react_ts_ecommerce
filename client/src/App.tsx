@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { RootLayout, AuthLayout } from "@/layouts";
 import { Toaster } from "@/components/ui/toaster";
-import { Home, About, Category, SignIn, SignUp, Checkout, ProductDetail } from "@/pages";
+import { Home, About, Category, SignIn, SignUp, Checkout, ProductDetail, Success, Cancel, MyOrders } from "@/pages";
 
 const App = () => {
   return (
@@ -17,6 +17,9 @@ const App = () => {
           <Route path="/detail/:productId" element={<ProductDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/cancel" element={<Cancel />} />
+          <Route path="/myorders" element={<MyOrders />} />
         </Route>
       </Routes>
       <Toaster />

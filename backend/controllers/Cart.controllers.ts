@@ -17,7 +17,7 @@ export const addUpdateCart = async (req: Request, res: Response) => {
 
         if (existingItemIndex >= 0) {
             // Update existing item
-            cart.cartItems[existingItemIndex].quantity = quantity;
+            cart.cartItems[existingItemIndex].quantity += quantity;
         } else {
             // Add new item
             cart.cartItems.push({ id, title, quantity, price, thumbnail });

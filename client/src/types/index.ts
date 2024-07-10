@@ -95,10 +95,21 @@ export type PTYPE = {
     images : string[];
 }[]
 
-export type PRODUCT = {
+export interface PRODUCT  {
     id : number;
     title : string;
     quantity : number;
     price : number;
     thumbnail : string;
+}
+
+export interface ORDER extends PRODUCT{
+    items : PRODUCT[];
+    totalPrice : number;
+    userId : string;
+}
+
+export interface ORDER_RES_ITEMS extends PRODUCT {
+    cartItems : PRODUCT[];
+    userId : number;
 }
