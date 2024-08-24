@@ -8,13 +8,14 @@ const Success = () => {
   const { cart, setCart } = useCart();
   const { placeOrder } = useOrder();
   const { user } = useAuth();
+  const address = user.address
   const userId = user?.id
   const items = cart.items;
   const totalPrice = cart.totalPrice;
 
   useEffect(() => {
     if (!orderPlaced && items.length > 0) {
-      let data = { items, totalPrice, userId };
+      let data = { items, totalPrice, userId, address };
 
       const placeOrderAsync = async () => {
         try {
@@ -29,12 +30,13 @@ const Success = () => {
       };
       placeOrderAsync();
     }
+  }, [items, orderPlaced, totalPrice, userId, user.address, placeOrder, setCart]);
 
-    // // Cleanup function to reset orderPlaced state when the component unmounts
-    // return () => {
-    //   setOrderPlaced(false);
-    // };
-  }, [items]);
+  useEffect(() => {
+    return () => {
+      setOrderPlaced(false); 
+    }
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-100">

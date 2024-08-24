@@ -4,6 +4,7 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { conf } from "../conf";
+import { sendEmail } from "../helpers/sendEmail";
 
 export const signUp = async (req: Request, res: Response) => {
     console.log(req)
@@ -28,7 +29,9 @@ export const signUp = async (req: Request, res: Response) => {
                 const userData = { ...req.body, password: hashedPassword }
 
                 const savedUser = await Users.create(userData)
-                return res.status(200).json(savedUser)
+
+                await sendEmail({ emailId : savedUser.email, emailType : 'VERIFY', userId : savedUser._id});
+                return res.status(200).json({ message : "Sign Up Successfully. Please verify your email.", user : savedUser});
             }
         }
     } catch (error) {
@@ -46,10 +49,33 @@ export const login = async (req: Request, res: Response) => {
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid email id or password" });
 
         const token = jwt.sign({ id: user._id, email: user.email }, conf.JWT_TOKEN);
-
-        return res.status(200).json({ details: { email: user.email, id: user._id, access_token: token } })
+        
+        return res.status(200).json({ details: { email: user.email, id: user._id, address : user.address,access_token: token } })
 
     } catch (err) {
         return res.status(404).json("something went wrong while logged in.");
+    }
+}
+
+export const addShippingDetails = async (req: Request, res: Response) => {
+    try{
+        // console.log("request params", req.params)
+        // console.log("request body", req.body)
+        const { residentialDetails, landmark, street, city , state, pincode} = req.body;
+        const userId = req.params.userId;
+        // console.log("user id in addshippingdetails", userId)
+        const user = await Users.findOneAndUpdate(
+            { _id : userId },
+            { $set : {
+                address : { residentialDetails, landmark, street, city, state, pincode }
+            }},
+            { new : true },
+        );
+        // console.log("added shipping details user", user)
+
+        return res.status(200).json({ message : "Shipping details added successfully.", success : true, details : user })
+    }catch(error){
+        console.log(error)
+        return res.status(404).json("something went wrong while signup.")
     }
 }

@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { BsXLg } from "react-icons/bs";
 import EmptyCart from "@/assets/images/empty.png";
 import Card from "./Card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OpenCart from "./OpenCart";
 import { useCart } from "@/context/useCart";
 import { loadStripe } from "@stripe/stripe-js";
@@ -16,6 +16,7 @@ type PropType = {
 };
 
 const CartModel = ({ quantity }: PropType) => {
+  const navigate = useNavigate();
   const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
   const openCart = () => setIsModelOpen(true);
   const closeCart = () => setIsModelOpen(false);
@@ -23,6 +24,8 @@ const CartModel = ({ quantity }: PropType) => {
   const { cart, fetchCartItems, setCart } = useCart();
   const { user } = useAuth();
   const items = cart.items;
+  console.log("cart items", items);
+  
 
   useEffect(() => {
     if (userId) {
@@ -41,21 +44,7 @@ const CartModel = ({ quantity }: PropType) => {
 
   const handleCheckOut = async () => {
     setIsModelOpen(false);
-    
-    const data = { items }
-    await axios
-      .post(`${conf.dbApi}/payment/create-checkout-session`, data, {
-        headers: {
-          Authorization: `Bearer ${user.access_token}`,
-        },
-      })
-      .then((response) => {
-        console.log("response",response)
-        if (response.data.url) {
-          window.location.href = response.data.url;
-        }
-      })
-      .catch((err) => console.log(err));
+    navigate("/shippingDetails");
   };
 
   return (

@@ -18,6 +18,7 @@ type Product = {
   category: string;
   thumbnail: string;
   images: string[];
+  availabilityStatus : string;
 };
 
 const ProductDetail = () => {
@@ -35,6 +36,7 @@ const ProductDetail = () => {
       try {
         const response = await axios.get(`${conf.productApi}/${productId}`);
         setProduct(response.data);
+        console.log(product)
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch product details");
@@ -60,6 +62,7 @@ const ProductDetail = () => {
         quantity: 1,
         price: product?.price,
         thumbnail: product?.thumbnail,
+        stock : product?.stock
       };
       addOrUpdateCartItem(obj, "add")
     }
@@ -91,6 +94,7 @@ const ProductDetail = () => {
                 className="w-full lg:w-96 h-auto object-cover rounded"
                 src={product.images[0]}
                 alt={product.title}
+                loading="lazy"
               />
             </div>
             <div className="p-6 lg:flex-grow">
@@ -115,6 +119,14 @@ const ProductDetail = () => {
               </div>
               <div className="mb-4">
                 <span className="text-sm font-medium text-gray-500">
+                  Avalability:{" "}
+                </span>
+                <span className="text-sm text-gray-700">
+                  {product.availabilityStatus}
+                </span>
+              </div>
+              <div className="mb-4">
+                <span className="text-sm font-medium text-gray-500">
                   Brand:{" "}
                 </span>
                 <span className="text-sm text-gray-700">{product.brand}</span>
@@ -123,6 +135,7 @@ const ProductDetail = () => {
                 onClick={() => {
                   addToCart();
                 }}
+                disabled={(product.availabilityStatus === "In Stock") ? false : true}
                 className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
               >
                 Add to Cart

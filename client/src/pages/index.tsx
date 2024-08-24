@@ -8,3 +8,6 @@ export { default as ProductDetail } from "./ProductDetail"
 export { default as Success } from "./Success"
 export { default as Cancel } from "./Cancel"
 export { default as MyOrders } from "./MyOrders"
+export { default as VerifyEmail } from "./VerifyEmail"
+export { default as ShippingDetails } from "./ShippingDetails";
+export { default as Dashboard } from "./Dashboard"

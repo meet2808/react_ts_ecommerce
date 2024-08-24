@@ -11,7 +11,7 @@ export class OrderService {
     }
 
     async placeOrder(data : ORDER) {
-        console.log(data)
+        console.log("place order data",data)
         const response = await axios.post(`${conf.dbApi}/order/new`, data, {
             headers: {
                 Authorization: `Bearer ${this.access_token}`
@@ -21,13 +21,16 @@ export class OrderService {
     }
 
     async fetchAllOrders(userId : string) {
-        console.log(userId)
-        const response = await axios.get(`${conf.dbApi}/order/${userId}/all`,{
-            headers: {
-                Authorization: `Bearer ${this.access_token}`
-            }
-        })
-        return response;
+        // console.log("id",userId)
+        if(userId){
+            const response = await axios.get(`${conf.dbApi}/order/${userId}/all`,{
+                headers: {
+                    Authorization: `Bearer ${this.access_token}`
+                }
+            })
+            // console.log(response)
+            return response.data;
+        }
     }
 }
 

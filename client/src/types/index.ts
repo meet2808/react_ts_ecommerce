@@ -79,6 +79,14 @@ export type USER_TYPE = {
     name : string;
     id : string;
     access_token : string;
+    address : {
+        residentialDetails : string;
+        street : string;
+        landmark : string;
+        city : string;
+        state : string;
+        pincode :string;
+    }
 }
 
 export type PTYPE = {
@@ -101,12 +109,15 @@ export interface PRODUCT  {
     quantity : number;
     price : number;
     thumbnail : string;
+    stock : number;
 }
 
 export interface ORDER extends PRODUCT{
     items : PRODUCT[];
     totalPrice : number;
     userId : string;
+    _id : string;
+    orderItems : PRODUCT[];
 }
 
 export interface ORDER_RES_ITEMS extends PRODUCT {

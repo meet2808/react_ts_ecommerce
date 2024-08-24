@@ -7,7 +7,15 @@ export const INITIAL_USER = {
   email: "",
   name: "",
   id: "",
-  access_token : ""
+  access_token : "",
+  address : {
+    residentialDetails : "",
+    street : "",
+    landmark : "",
+    city : "",
+    state : "",
+    pincode : ""
+}
 };
 
 const INITIAL_STATE = {

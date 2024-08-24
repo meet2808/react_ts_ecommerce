@@ -4,10 +4,10 @@ import Order from "../models/Order.model";
 import { Request, Response } from "express";
 
 export const placeOrder = async (req: Request, res: Response) => {
-    const { items, totalPrice, userId } = req.body;
-    console.log(req.params.userId)
+    const { items, totalPrice, userId, address } = req.body;
+    console.log("order data", items)
     try {
-        const newOrder = new Order({ userId, orderItems : items, totalPrice });
+        const newOrder = new Order({ userId, orderItems : items, totalPrice, address });
         await newOrder.save();
 
         await Cart.findOneAndUpdate(

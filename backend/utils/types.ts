@@ -15,4 +15,12 @@ export interface OrderDocument extends CART_PRODUCT{
     userId : string;
     orderItems : CART_PRODUCT[];
     totalPrice : number;
+    address : {
+        residentialDetails : string;
+        street : string;
+        landmark : string;
+        city : string;
+        state : string;
+        pincode : string;
+    }
 }

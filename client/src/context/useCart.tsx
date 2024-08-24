@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { PRODUCT } from "@/types";
 import cartService from "@/service/Cart";
+import { log } from "util";
 
 export const INITIAL_CART = {
   items: [],
@@ -50,6 +51,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     product: PRODUCT,
     operation: "increment" | "decrement" | "add" = "add"
   ) => {
+    console.log("product", product)
     setCart((prevCart) => {
       const existingItemIndex = prevCart.items.findIndex(
         (item) => item.id === product.id
@@ -135,6 +137,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchCartItems = async () => {
     try {
       const response = await cartService.getCart();
+      // console.log(response);
       setCart({
         items: response.data.cartItems,
         totalPrice: response.data.cartItems.reduce(

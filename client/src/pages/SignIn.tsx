@@ -1,83 +1,118 @@
-import { Input, Loader } from "@/components";
+import { Loader } from "@/components";
 import { Link, useNavigate } from "react-router-dom";
-import { LData } from "@/types";
 import authService from "@/service/Auth";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/useAuthanticate";
 import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { signInSchema } from "@/schema/schema";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isLoading, setIsLoggedIn, setIsLoading, isLoggedIn, setIsAuthenticated, setUser } =
-    useAuth();
-  const { register, handleSubmit, reset } = useForm<LData>();
+  const {
+    isLoading,
+    setIsLoggedIn,
+    setIsLoading,
+    isLoggedIn,
+    setIsAuthenticated,
+    setUser,
+  } = useAuth();
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const onSubmit: SubmitHandler<LData> = async (data) => {
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsLoading(true);
-    let { email, pw } = data;
-    let password = pw;
+    const { email, password } = data;
+
     const response = await authService.signIn({ email, password });
-    console.log(response)
+    // console.log(response);
+
     if (!response?.success) {
       toast({ title: "Logged in Failed. Please try again." });
       setIsLoading(false);
       return;
-    } else if(response?.success) {
+    } else if (response?.success) {
       setIsLoggedIn(true);
       setIsLoading(false);
       setIsAuthenticated(true);
-      setUser(response.data)
-      localStorage.setItem('user', JSON.stringify(response.data));
-      navigate("/")
+      setUser(response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
+      navigate("/");
     }
-    reset();
+    setIsLoading(false);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-[400px] px-[5px] py-[10px]"
-    >
-      <h1 className="text-[30px] font-bold uppercase text-center">Sign In</h1>
-      <div className="py-1">
-        <Input
-          type={"email"}
-          label="Email"
-          errors={"Please enter your email"}
-          value={"email"}
-          placeholder={"Email"}
-          hasError={false}
-          register={register}
-        />
+    <div>
+      <Form {...form}>
+        <form
+          className="space-y-3 w-[350px]"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Input
-          type={"password"}
-          label="Password"
-          errors={"Please enter your password"}
-          value={"pw"}
-          placeholder={"Password"}
-          hasError={false}
-          register={register}
-        />
-      </div>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <button
-        disabled={isLoading ? true : false}
-        className="bg-slate-900 h-12 w-full text-white uppercase border hover:text-slate-900 hover:border-slate-900 hover:bg-transparent hover:ease-in-out hover:delay-10"
-      >
-        {isLoading ? (
-          <div className="flex flex-row justify-center items-center gap-3 capitalize">
-            <Loader /> Loading ...
-          </div>
-        ) : (
-          <>Sign In</>
-        )}
-      </button>
-      <span className="text-neutral-600 text-[15px]">
-        Don't have an account?<Link to="/auth/sign-up">Sign Up</Link>
-      </span>
-    </form>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={isLoading ? true : false}
+          >
+            {isLoading ? (
+              <div className="flex flex-row justify-center items-center gap-3 capitalize">
+                <Loader width={20} height={20} /> Loading...
+              </div>
+            ) : (
+              <>Sign In</>
+            )}
+          </Button>
+          <span className="text-neutral-600 text-[15px]">
+            Already have an account?<Link to="/auth/sign-up">Sign Up</Link>
+          </span>
+        </form>
+      </Form>
+    </div>
   );
 };
 

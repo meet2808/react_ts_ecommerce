@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { CATEGORY_LIST } from "@/utils";
-import { CATEGORY_LIST_TYPES, PTYPE } from "@/types";
+import { CATEGORY_LIST_TYPES } from "@/types";
 import { Link } from "react-router-dom";
-import { getProducts } from "@/api/api";
 
 const Sidebar = ({
-  setProducts,
+  setCategory,
+  category,
 }: {
-  setProducts: React.Dispatch<React.SetStateAction<PTYPE>>;
+  category: React.ComponentState;
+  setCategory: React.Dispatch<React.SetStateAction<any>>;
 }) => {
-  const [category, setCategory] = useState("all");
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const products = await getProducts(category); // Await the promise here
-        setProducts(products); // Set the resolved products
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [category, setProducts]);
-
   return (
     <>
       <section className="gap-4 hidden md:hidden lg:block">
@@ -39,7 +25,9 @@ const Sidebar = ({
                   setCategory(item.category);
                 }}
               >
-                <li className="text-sm text-black capitalize hover:text-black hover:underline underline-offset-4">
+                <li
+                  className={`text-sm text-black capitalize ${category === item && 'underline underline-offset-4'} hover:text-black hover:underline underline-offset-4 `}
+                >
                   {item.label}
                 </li>
               </Link>

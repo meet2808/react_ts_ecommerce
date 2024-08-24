@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { signUp, login } from "../controllers/User.controllers";
-// import { verifyToken } from "../middleware/auth.middleware";
+import { signUp, login, addShippingDetails } from "../controllers/User.controllers";
+import { verifyToken } from "../middleware/auth.middleware";
 
 const router = Router();
 
@@ -11,5 +11,7 @@ router.route("/signup").post([
 ], signUp);
 
 router.route("/login").post(login);
+
+router.route("/add-shipping-details").post(verifyToken, addShippingDetails);
 
 export default router;

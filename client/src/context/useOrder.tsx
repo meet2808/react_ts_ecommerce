@@ -6,9 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import orderService from "@/service/Order";
-import { useAuth } from "./useAuthanticate";
-import { useCart } from "./useCart";
-import { ORDER, ORDER_RES_ITEMS } from "@/types";
+import { ORDER } from "@/types";
 
 export const INITIAL_ORDER = {
   orders: [],
@@ -24,11 +22,9 @@ export const OrderContext = createContext<ORDER_CONTEXT_TYPE>(INITIAL_ORDER);
 
 export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<ORDER[]>([]);
-  const user = JSON.parse(localStorage.getItem('user')!);
-  const userId = user?.id
-  // const { cart } = useCart();
-  // let { items, totalPrice } = cart;
-
+  const user = JSON.parse(localStorage.getItem("user")!);
+  const userId = user?.id;
+ 
   useEffect(() => {
     if (orders.length > 0) {
       localStorage.setItem("orders", JSON.stringify(orders));
@@ -37,23 +33,17 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [orders]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback (async () => {
     try {
       const response = await orderService.fetchAllOrders(userId);
-      console.log(response)
-      setOrders((prevOrders) => {
-        const items = response.data?.map((item: any) => {
-          orders.push(item.cartItems);
-        });
-
-        return items;
-      });
+      let data = response?.data;
+      setOrders(data)
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [orders, userId]);
 
-  const placeOrder = async (data : ORDER) => {
+  const placeOrder = async (data: ORDER) => {
     try {
       const newOrder = await orderService.placeOrder(data);
       setOrders((prevOrders) => [...prevOrders, newOrder]);
