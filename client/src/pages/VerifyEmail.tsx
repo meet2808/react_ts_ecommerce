@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
+    const navigate = useNavigate();
     const [token, setToken] = useState<String>("");
     const [response, setResponse] = useState<String>("");
 
     const verifyToken = async () => {
         const response = await axios.post(`http://localhost:2008/api/v1/email/verifyUser`, {token});
+        console.log("verify email", response)
         if(response)
             setResponse(response.data.message);
+        if(response?.data.success) {
+            setTimeout(() => { navigate("/auth/sign-in") }, 1000)
+        }
     }
 
     useEffect(() => {
@@ -16,7 +22,7 @@ const VerifyEmail = () => {
         const query = new URLSearchParams(window.location.search);
         // console.log("query",query)
         const token = query.get('token')!;
-        console.log(token)
+        // console.log(token)
         setToken(token)
     }, [])
     return(

@@ -113,7 +113,7 @@ const SignIn = () => {
             Don't have an account?<Link to="/auth/sign-up">Sign Up</Link>
           </span><br/>
           <span className="text-neutral-600 text-[13px]">
-           <Link to="/auth/sign-up">Forgot Password ?</Link>
+           <Link to="/forgotPassword">Forgot Password ?</Link>
           </span>
         </form>
       </Form>

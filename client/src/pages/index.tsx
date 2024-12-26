@@ -11,4 +11,6 @@ export { default as MyOrders } from "./MyOrders"
 export { default as VerifyEmail } from "./VerifyEmail"
 export { default as ShippingDetails } from "./ShippingDetails";
 export { default as ForgotPassword } from "./ForgotPassword";
+export { default as VerifyForgotPasswordEmail } from "./VerifyForgotPasswordEmail";
+export { default as ChangePassword } from "./ChangePassword";
 export { default as Dashboard } from "./Dashboard";

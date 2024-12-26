@@ -31,4 +31,17 @@ export const shippingDetailsSchema = z.object({
     city : z.string({ required_error : "Please select the city"}).trim().min(1, { message : "Please select your city"}),
     state : z.string({ required_error : "Please select the state"}).trim().min(1, { message : "Please select your state"}),
     pincode : z.string().trim().min(6, { message : "Pincode must be a 6 digit long"}).max(6, { message : "Pincode should not be greater than 6 digits."})
+});
+
+export const forgotPasswordSchema = z.object({
+    email :  z.string({ required_error : "Email is required", invalid_type_error : "Email must be a string"}).email({ message : "Invalid email address"})
+})
+
+export const changePasswordSchema = z.object({
+    email :  z.string().email({ message : "Invalid email address"}),
+    password : z.string().min(6, { message : "Password should contain atleast 6 characters long."}).max(20, { message : "Password should not contain more than 20 characters."}),
+    confirmPassword : z.string().min(6, { message : "Password should contain atleast 6 characters long."}).max(20, { message : "Password should not contain more than 20 characters."}),
+}).refine(data => data.password === data.confirmPassword, {
+    message : "Password doesn't match",
+    path : ["confirmPassword"]
 })

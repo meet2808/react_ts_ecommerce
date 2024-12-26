@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Loader } from "@/components";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import authService from "@/service/Auth";
-import { useAuth } from "@/context/useAuthanticate";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,54 +16,41 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { signUpSchema } from "@/schema/schema";
+import { changePasswordSchema } from "@/schema/schema";
 
-const SignUp = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { setIsLoading, isLoading } = useAuth();
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const form = useForm<z.infer<typeof changePasswordSchema>>({
+    resolver: zodResolver(changePasswordSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+  const onSubmit = async (data : z.infer<typeof changePasswordSchema>) => {
     setIsLoading(true);
-    const { name, email, password } = data;
+    const { email, password } = data;
 
-    const response = await authService.signUp({ name, email, password });
-    toast({ title : response?.message })
+    const response = await authService.changePassword({ email, password });
+    toast({ title : response.message});
     setIsLoading(false);
     if(response.success) {
         setTimeout(() => { navigate("/auth/sign-in")}, 2000)
     }
-  };
+  }
 
-  return (
-    <div className="m-auto my-12 md:my-10 lg:my-5 w-[350px]">
-       {/* <h1 className="font-bold text-3xl text-center mb-4">Productmart</h1> */}
-       <h1 className="font-bold text-xl text-center">Sign Up</h1>
-      <Form {...form}>
-        <form className="space-y-3 w-[350px]" onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
+  return <div>
+    <h1 className="font-bold text-xl text-center">Change Password</h1>
+    <Form {...form}>
+        <form
+            className="space-y-3 w-[350px]"
+            onSubmit={form.handleSubmit(onSubmit)}
+        >
+            <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -115,16 +102,12 @@ const SignUp = () => {
                 <Loader width={20} height={20} /> Loading...
               </div>
             ) : (
-              <>Sign Up</>
+              <>Submit</>
             )}
           </Button>
-          <span className="text-neutral-600 text-[15px]">
-          Already have an account?<Link to="/auth/sign-in">Sign In</Link>
-          </span>
         </form>
-      </Form>
-    </div>
-  );
+    </Form>
+  </div>;
 };
 
-export default SignUp;
+export default ChangePassword;

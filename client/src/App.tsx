@@ -15,7 +15,9 @@ import {
   MyOrders,
   ShippingDetails,
   VerifyEmail,
-  Dashboard,
+  ForgotPassword,
+  VerifyForgotPasswordEmail,
+  ChangePassword
 } from "@/pages";
 
 const Category = lazy(() => import('./pages/Category'))
@@ -28,6 +30,9 @@ const App = () => {
           <Route path="/auth/sign-in" element={<SignIn />} />
           <Route path="/auth/sign-up" element={<SignUp />} />
           <Route path="/verifyEmail" element={<VerifyEmail />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/verifyForgotPasswordEmail" element={<VerifyForgotPasswordEmail />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
         </Route>
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />

@@ -8,14 +8,14 @@ import { sendEmail } from "../helpers/sendEmail";
 
 // controller for user signup and registration process
 export const signUp = async (req: Request, res: Response) => {
-    console.log(req)
+    // console.log(req)
     const errors = validationResult(req);
 
     try {
         const fields = ["email", "password", "name"];
         const emptyFields = fields.filter(field => !req.body[field]);
 
-        if (emptyFields.length > 0) return res.status(403).json({ error: "Please fill in all the required fields." });
+        if (emptyFields.length > 0) return res.status(403).json({ message : "Please fill in all the required fields." });
 
         if (!errors.isEmpty()) {
             return res.status(403).json(errors)
@@ -23,7 +23,7 @@ export const signUp = async (req: Request, res: Response) => {
             let isExist = await Users.find({ email: req.body.email });
 
             if (isExist.length !== 0) {
-                return res.status(409).json("User is already registered.")
+                return res.status(409).json({message : "This email is already registered.", success : false })
             } else {
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -33,7 +33,7 @@ export const signUp = async (req: Request, res: Response) => {
 
                 const mailRes = await sendEmail({ emailId: savedUser.email, emailType: 'VERIFY', userId: savedUser._id });
                 // console.log("mail response", mailRes);
-                return res.status(200).json({ message: "Sign Up Successfully. Please verify your email.", user: savedUser });
+                return res.status(200).json({ message: "Sign Up Successfully. Please verify your email.", user: savedUser, success : true });
             }
         }
     } catch (error) {

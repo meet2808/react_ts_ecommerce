@@ -28,10 +28,10 @@ export const sendEmail = async ({ emailId, emailType, userId }: EMAIL_TYPE) => {
                 await Users.findOneAndUpdate(
                     { email: emailId },
                     {
-                        $set : {
-                            forgotPasswordToken : hashedToken,
-                            forgotPasswordExpiry : Date.now() + 3600000
-                        } 
+                        $set: {
+                            forgotPasswordToken: hashedToken,
+                            forgotPasswordExpiry: Date.now() + 3600000
+                        }
                     }
                 );
                 break;
@@ -48,10 +48,19 @@ export const sendEmail = async ({ emailId, emailType, userId }: EMAIL_TYPE) => {
             }
         });
 
-        const emailBody = `<p>
-            Click <a href="http://localhost:5173/verifyemail?token=${hashedToken}">here</a> to ${emailType == "VERIFY" ? "VERIFY YOUR EMAIL" : "RESET YOUR PASSWORD"}
+        let emailBody;
+
+        if (emailType == "VERIFY") {
+            emailBody = `<p>
+            Click <a href="http://localhost:5173/verifyemail?token=${hashedToken}">here</a> to VERIFY YOUR EMAIL
             or copy and paste the below link in your browser.<br />http://localhost:5173/verifyemail?token=${hashedToken}
         </p>`
+        } else if (emailType == "RESET") {
+            emailBody = `<p>
+            Click <a href="http://localhost:5173/verifyForgotPasswordEmail?token=${hashedToken}">here</a> to RESET YOUR PASSWORD
+            or copy and paste the below link in your browser.<br />http://localhost:5173/verifyemail?token=${hashedToken}
+            </p>`
+        }
 
         const mailOptions = {
             from: conf.GMAIL,
