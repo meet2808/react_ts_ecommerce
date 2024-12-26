@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const storedUser = JSON.parse(localStorage.getItem('user') || JSON.stringify(INITIAL_USER));
     if (storedUser !== INITIAL_USER) {
       setUser(storedUser);
-      setIsAuthenticated(true);
+      setIsAuthenticated(false);
       fetchCartItems();
       // fetchOrders();
     }

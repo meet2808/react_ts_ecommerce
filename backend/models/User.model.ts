@@ -22,6 +22,7 @@ const Users = new mongoose.Schema({
         pincode : { type : Number }
     },
     isVerify : { type : Boolean, default : false},
+    isForgotPasswordVerificationCompleted : { type : Boolean, default : false},
     verifyToken : String,
     verifyTokenExpiry: Date,
     forgotPasswordToken: String,

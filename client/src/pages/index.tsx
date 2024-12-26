@@ -10,4 +10,5 @@ export { default as Cancel } from "./Cancel"
 export { default as MyOrders } from "./MyOrders"
 export { default as VerifyEmail } from "./VerifyEmail"
 export { default as ShippingDetails } from "./ShippingDetails";
-export { default as Dashboard } from "./Dashboard"
+export { default as ForgotPassword } from "./ForgotPassword";
+export { default as Dashboard } from "./Dashboard";

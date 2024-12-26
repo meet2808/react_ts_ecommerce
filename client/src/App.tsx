@@ -24,15 +24,16 @@ const App = () => {
   return (
     <>
       <Routes>
-        {/* <Route element={<AuthLayout />}> */}
+        <Route element={<AuthLayout />}>
           <Route path="/auth/sign-in" element={<SignIn />} />
           <Route path="/auth/sign-up" element={<SignUp />} />
-        {/* </Route> */}
+          <Route path="/verifyEmail" element={<VerifyEmail />} />
+        </Route>
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
           <Route
             path="/category/:categoryName"
-            element={
+            element={ 
               <Suspense fallback={<div>Loading...</div>}>
                 <Category />
               </Suspense>
@@ -44,7 +45,6 @@ const App = () => {
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/myorders" element={<MyOrders />} />
-          <Route path="/verifyEmail" element={<VerifyEmail />} />
           <Route path="/shippingDetails" element={<ShippingDetails />} />
           {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}
         </Route>

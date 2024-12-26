@@ -48,7 +48,9 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="m-auto my-12 md:my-10 lg:my-5 w-[350px]">
+       {/* <h1 className="font-bold text-3xl text-center mb-4">Productmart</h1> */}
+       <h1 className="font-bold text-xl text-center">Sign Up</h1>
       <Form {...form}>
         <form className="space-y-3 w-[350px]" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

@@ -1,4 +1,4 @@
-import Users  from "../models/User.model";
+import Users from "../models/User.model";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { conf } from "../conf";
@@ -6,13 +6,13 @@ import { conf } from "../conf";
 interface EMAIL_TYPE {
     emailId: string;
     emailType: string;
-    userId: any;
+    userId: any | null | undefined;
 }
 
 export const sendEmail = async ({ emailId, emailType, userId }: EMAIL_TYPE) => {
     try {
         // const hashedToken = await bcrypt.hash(userId.toString(), 10);
-        const hashedToken = jwt.sign({ emailId }, conf.EMAIL_TOKEN_SECRET);
+        let hashedToken = jwt.sign({ emailId }, conf.EMAIL_TOKEN_SECRET);
 
         switch (emailType) {
             case "VERIFY":
@@ -25,12 +25,15 @@ export const sendEmail = async ({ emailId, emailType, userId }: EMAIL_TYPE) => {
                 break;
 
             case "RESET":
-                await Users.findByIdAndUpdate(userId, {
-                    $set: {
-                        forgotPasswordToken: hashedToken,
-                        forgotPasswordExpiry: Date.now() + 3600000
+                await Users.findOneAndUpdate(
+                    { email: emailId },
+                    {
+                        $set : {
+                            forgotPasswordToken : hashedToken,
+                            forgotPasswordExpiry : Date.now() + 3600000
+                        } 
                     }
-                })
+                );
                 break;
 
             default:
@@ -38,7 +41,7 @@ export const sendEmail = async ({ emailId, emailType, userId }: EMAIL_TYPE) => {
         }
 
         const transport = nodemailer.createTransport({
-            service : "gmail",
+            service: "gmail",
             auth: {
                 user: conf.GMAIL,
                 pass: conf.GMAIL_PASSWORD

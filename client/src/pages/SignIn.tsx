@@ -60,10 +60,12 @@ const SignIn = () => {
   };
 
   return (
-    <div>
+    <div className="m-auto my-12 md:my-22 lg:my-16 w-[350px]">
+      {/* <h1 className="font-bold text-3xl text-center mb-4">Productmart</h1> */}
+      <h1 className="font-bold text-xl text-center">Sign In</h1>
       <Form {...form}>
         <form
-          className="space-y-3 w-[350px]"
+          className="space-y-3"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
@@ -107,8 +109,11 @@ const SignIn = () => {
               <>Sign In</>
             )}
           </Button>
-          <span className="text-neutral-600 text-[15px]">
-            Already have an account?<Link to="/auth/sign-up">Sign Up</Link>
+          <span className="text-neutral-600 text-[14px]">
+            Don't have an account?<Link to="/auth/sign-up">Sign Up</Link>
+          </span><br/>
+          <span className="text-neutral-600 text-[13px]">
+           <Link to="/auth/sign-up">Forgot Password ?</Link>
           </span>
         </form>
       </Form>

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import conf from "@/conf/conf";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useAuth } from "@/context/useAuthanticate";
 import { useCart } from "@/context/useCart";
 import { useToast } from "@/components/ui/use-toast";
@@ -18,7 +18,7 @@ type Product = {
   category: string;
   thumbnail: string;
   images: string[];
-  availabilityStatus : string;
+  availabilityStatus: string;
 };
 
 const ProductDetail = () => {
@@ -36,7 +36,7 @@ const ProductDetail = () => {
       try {
         const response = await axios.get(`${conf.productApi}/${productId}`);
         setProduct(response.data);
-        console.log(product)
+        console.log(product);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch product details");
@@ -62,9 +62,9 @@ const ProductDetail = () => {
         quantity: 1,
         price: product?.price,
         thumbnail: product?.thumbnail,
-        stock : product?.stock
+        stock: product?.stock,
       };
-      addOrUpdateCartItem(obj, "add")
+      addOrUpdateCartItem(obj, "add");
     }
   };
 
@@ -90,12 +90,14 @@ const ProductDetail = () => {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="lg:flex lg:items-center">
             <div className="lg:flex-shrink-0">
-              <img
-                className="w-full lg:w-96 h-auto object-cover rounded"
-                src={product.images[0]}
-                alt={product.title}
-                loading="lazy"
-              />
+              <Suspense>
+                <img
+                  className="w-full lg:w-96 h-auto object-cover rounded"
+                  src={product.images[0]}
+                  alt={product.title}
+                  loading="lazy"
+                />
+              </Suspense>
             </div>
             <div className="p-6 lg:flex-grow">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -135,7 +137,9 @@ const ProductDetail = () => {
                 onClick={() => {
                   addToCart();
                 }}
-                disabled={(product.availabilityStatus === "In Stock") ? false : true}
+                disabled={
+                  product.availabilityStatus === "In Stock" ? false : true
+                }
                 className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
               >
                 Add to Cart
@@ -148,12 +152,14 @@ const ProductDetail = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {product.images.map((image, index) => (
-                <img
-                  key={index}
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                  src={image}
-                  alt={`Product image ${index + 1}`}
-                />
+                <Suspense>
+                  <img
+                    key={index}
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                    src={image}
+                    alt={`Product image ${index + 1}`}
+                  />
+                </Suspense>
               ))}
             </div>
           </div>

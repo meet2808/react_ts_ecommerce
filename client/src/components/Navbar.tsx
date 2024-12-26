@@ -23,6 +23,7 @@ const Navbar = () => {
     setIsAuthenticated,
   } = useAuth();
   const { cart } = useCart();
+  console.log("isauthenticated", isAuthenticated)
 
   const navigate = useNavigate();
 
