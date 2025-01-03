@@ -25,7 +25,6 @@ const SignIn = () => {
     isLoading,
     setIsLoggedIn,
     setIsLoading,
-    isLoggedIn,
     setIsAuthenticated,
     setUser,
   } = useAuth();
@@ -52,9 +51,10 @@ const SignIn = () => {
       setIsLoggedIn(true);
       setIsLoading(false);
       setIsAuthenticated(true);
-      setUser(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
-      navigate("/");
+      setUser(response?.data?.details);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     }
     setIsLoading(false);
   };
@@ -64,10 +64,7 @@ const SignIn = () => {
       {/* <h1 className="font-bold text-3xl text-center mb-4">Productmart</h1> */}
       <h1 className="font-bold text-xl text-center">Sign In</h1>
       <Form {...form}>
-        <form
-          className="space-y-3"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="email"
@@ -111,9 +108,10 @@ const SignIn = () => {
           </Button>
           <span className="text-neutral-600 text-[14px]">
             Don't have an account?<Link to="/auth/sign-up">Sign Up</Link>
-          </span><br/>
+          </span>
+          <br />
           <span className="text-neutral-600 text-[13px]">
-           <Link to="/forgotPassword">Forgot Password ?</Link>
+            <Link to="/forgotPassword">Forgot Password ?</Link>
           </span>
         </form>
       </Form>

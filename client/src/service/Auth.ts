@@ -1,37 +1,32 @@
-import conf from "@/conf/conf";
-import axios from 'axios';
-import { SIGNUP_TYPE } from "@/types";
+import { SIGNUP_TYPE, ADDRESS_TYPE } from "@/types";
+import { makeRequest } from "@/utils/makeRequest";
 export class AuthService {
-    async makeRequest(endpoint: string, data: object) {
-        try {
-            const response = await axios.post(`${conf.dbApi}${endpoint}`, data);
-            return {
-                success: true,
-                data: response.data,
-                message : response.data.message
-            };
-        } catch (error: any) {
-            return {
-                success: false,
-                message : error.response?.data?.message || error.message,
-            };
-        }
+    access_token;
+
+    constructor() {
+        let user = JSON.parse(localStorage.getItem('user')!);
+        // console.log("cartService user", user)
+        if (user) this.access_token = user.access_token;
     }
 
     async signUp({ email, password, name }: SIGNUP_TYPE) {
-        return await this.makeRequest("/users/signup", { email, password, name });
+        return await makeRequest({ endpoint: "/users/signup", method: "POST", data: { email, password, name } });
     }
 
     async signIn({ email, password }: { email: string, password: string }) {
-        return await this.makeRequest("/users/login", { email, password });
+        return await makeRequest({ endpoint: "/users/login", method: "POST", data: { email, password } });
     }
 
     async forgotPasswordRequest({ email }: { email: string }) {
-        return await this.makeRequest("/users/forgotPasswordRequest", { email });
+        return await makeRequest({ endpoint: "/users/forgotPasswordRequest", method: "POST", data: { email } });
     }
 
-    async changePassword({ email, password} : { email : string, password : string}){
-        return await this.makeRequest("/users/changePassword", { email, password });
+    async changePassword({ email, password }: { email: string, password: string }) {
+        return await makeRequest({ endpoint: "/users/changePassword", method: "POST", data: { email, password } });
+    }
+
+    async setShippingDetsils({ data }: { data: ADDRESS_TYPE }) {
+        return await makeRequest({ endpoint: "/users/add-shipping-details", method: "POST", data, headers: { Authorization: `Bearer ${this.access_token}` } })
     }
 }
 

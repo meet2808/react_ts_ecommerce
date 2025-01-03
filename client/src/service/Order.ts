@@ -7,7 +7,7 @@ export class OrderService {
 
     constructor() {
         let user = JSON.parse(localStorage.getItem('user')!);
-        this.access_token = user.access_token;
+        if(user) this.access_token = user.access_token;
     }
 
     async placeOrder(data : ORDER) {

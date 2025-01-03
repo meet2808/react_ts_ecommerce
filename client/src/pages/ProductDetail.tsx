@@ -36,7 +36,7 @@ const ProductDetail = () => {
       try {
         const response = await axios.get(`${conf.productApi}/${productId}`);
         setProduct(response.data);
-        console.log(product);
+        // console.log(product);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch product details");
@@ -64,6 +64,7 @@ const ProductDetail = () => {
         thumbnail: product?.thumbnail,
         stock: product?.stock,
       };
+      // console.log("product details", obj)
       addOrUpdateCartItem(obj, "add");
     }
   };
@@ -152,9 +153,8 @@ const ProductDetail = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {product.images.map((image, index) => (
-                <Suspense>
+                <Suspense  key={index}>
                   <img
-                    key={index}
                     className="w-full h-48 object-cover rounded-lg shadow-md"
                     src={image}
                     alt={`Product image ${index + 1}`}

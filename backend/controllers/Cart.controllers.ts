@@ -4,7 +4,10 @@ import { CART_PRODUCT, CartDocument } from "../utils/types"
 
 export const addUpdateCart = async (req: Request, res: Response) => {
     const { userId } = req.params;
-    const { id, title, quantity, price, thumbnail } = req.body;
+    const { id, title, quantity, price, thumbnail, stock } = req.body.product;
+    const { operation } = req.body
+    console.log("body product", req.body.product);
+    console.log("operation", req.body.operation);
 
     try {
         var cart = await Cart.findOne({ userId: req.params.userId });
@@ -17,10 +20,13 @@ export const addUpdateCart = async (req: Request, res: Response) => {
 
         if (existingItemIndex >= 0) {
             // Update existing item
-            cart.cartItems[existingItemIndex].quantity += quantity;
+            if (operation === "increment")
+                cart.cartItems[existingItemIndex].quantity += quantity;
+            else if (operation === "decrement")
+                cart.cartItems[existingItemIndex].quantity -= quantity;
         } else {
             // Add new item
-            cart.cartItems.push({ id, title, quantity, price, thumbnail });
+            cart.cartItems.push({ id, title, quantity, price, thumbnail, stock });
         }
 
         await cart.save();
@@ -33,6 +39,7 @@ export const addUpdateCart = async (req: Request, res: Response) => {
 
 export const getCartItems = async (req: Request, res: Response) => {
     try {
+        // console.log("userId in getCartItems", req.params.userId)
         const cart = await Cart.findOne({ userId: req.params.userId });
         if (!cart) {
             return res.status(404).json({ message: 'Cart not found' });
@@ -51,7 +58,7 @@ export const deleteItemFromCart = async (req: Request, res: Response) => {
         const updatedCart = await Cart.findOneAndUpdate(
             { userId },
             { $pull: { cartItems: { id: removeProductId } } },
-            { new : true }
+            { new: true }
         )
 
         if (!updatedCart) {

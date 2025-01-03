@@ -1,45 +1,32 @@
-import conf from "@/conf/conf";
 import { PRODUCT } from "@/types";
-import axios from "axios";
+import { makeRequest } from "@/utils/makeRequest";
 
 export class CartService {
     access_token;
 
     constructor() {
         let user = JSON.parse(localStorage.getItem('user')!);
-        this.access_token = user.access_token;
+        // console.log("cartService user", user)
+        if(user) this.access_token = user.access_token;
     }
-
 
     async getCart() {
-        const response = await axios.get(`${conf.dbApi}/cart/items`, {
-            headers: {
-                Authorization: `Bearer ${this.access_token}`
-            }
+        return await makeRequest({ 
+            endpoint : "/cart/items", 
+            headers : { Authorization : `Bearer ${this.access_token}`},
+            method : "GET"
         });
-        return response.data;
     }
 
-    async addOrUpdateCartItem(product: PRODUCT) {
-        const response = await axios.post(`${conf.dbApi}/cart/add-update`, product, {
-            headers: {
-                Authorization: `Bearer ${this.access_token}`
-            }
-        }); 
-        return response.data;
+    async addOrUpdateCartItem(product: PRODUCT, operation : string) {
+        console.log(product)
+        return await makeRequest({ endpoint : "/cart/add-update", data : {product, operation}, headers : { Authorization : `Bearer ${this.access_token}`}, method : "POST"});
     }
 
     async removeCartItem(id: number) {
-        const response = await axios.delete(`${conf.dbApi}/cart/delete/${id}`, {
-            headers: {
-                Authorization: `Bearer ${this.access_token}`
-            }
-        });
-        return response.data;
+        return await makeRequest({ endpoint : `/cart/delete/${id}`, headers : { Authorization : `Bearer ${this.access_token}`}, method : "DELETE"});
     }
-
 }
 
 const cartService = new CartService();
-
 export default cartService;

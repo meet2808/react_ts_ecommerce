@@ -7,6 +7,7 @@ const CartItemSchema = new mongoose.Schema<CART_PRODUCT>({
     quantity : { type : Number, require : true},
     price : { type : Number, require : true},
     thumbnail : { type : String , require : true},
+    stock : { type : Number, require : true }
 });
 
 const CartSchema = new mongoose.Schema<CartDocument>({

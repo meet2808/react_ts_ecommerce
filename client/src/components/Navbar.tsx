@@ -23,7 +23,8 @@ const Navbar = () => {
     setIsAuthenticated,
   } = useAuth();
   const { cart } = useCart();
-  console.log("isauthenticated", isAuthenticated)
+  // console.log("cart details navbar", cart)
+  // console.log("isauthenticated", isAuthenticated)
 
   const navigate = useNavigate();
 
@@ -73,7 +74,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <CartModel quantity={cart.totalUnits} />
+          <CartModel quantity={cart?.totalUnits} />
         </li>
         <li>
           <DropdownMenu>

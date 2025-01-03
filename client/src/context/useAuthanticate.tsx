@@ -47,7 +47,7 @@ export const AuthContext = createContext<AUTH_CONTEXT_TYPE>(INITIAL_STATE);
 export const AuthenticateProvider = AuthContext.Provider;
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { fetchCartItems } = useCart();
+  const { fetchCartItems, cart } = useCart();
   const { fetchOrders } = useOrder();
   const [user, setUser] = useState<USER_TYPE>(INITIAL_USER);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,13 +55,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user') || JSON.stringify(INITIAL_USER));
-    if (storedUser !== INITIAL_USER) {
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (storedUser?.access_token) {
       setUser(storedUser);
+      setIsAuthenticated(true);
+      setIsLoggedIn(true);
+      // fetchCartItems();
+    } else {
       setIsAuthenticated(false);
-      fetchCartItems();
-      // fetchOrders();
     }
+
+    console.log("cartdata in authetication context", cart)
+    // if(isLoggedIn && isAuthenticated) fetchCartItems();
+
   }, []);
 
   useEffect(() => {

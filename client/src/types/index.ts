@@ -74,19 +74,21 @@ export type SIGNUP_TYPE = {
     name : string;
 }
 
+export type ADDRESS_TYPE = {
+    residentialDetails : string;
+    street : string;
+    landmark : string;
+    city : string;
+    state : string;
+    pincode :string;
+}
+
 export type USER_TYPE = {
     email : string;
     name : string;
     id : string;
     access_token : string;
-    address : {
-        residentialDetails : string;
-        street : string;
-        landmark : string;
-        city : string;
-        state : string;
-        pincode :string;
-    }
+    address : ADDRESS_TYPE;
 }
 
 export type PTYPE = {

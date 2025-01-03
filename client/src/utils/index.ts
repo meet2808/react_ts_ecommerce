@@ -11,10 +11,10 @@ export const FOOTER_LINKS: FOOTER_LINK_TYPES = [
 
 export const CATEGORY_LIST = [
     { label : "All", link : "/category/all", category : "all"},
-    { label : "Tshirt", link : "/category/tshirts", category : "mens-shirts"},
+    { label : "Tshirt", link : "/category/mens-shirts", category : "mens-shirts"},
     { label : "Laptops", link : "/category/laptops", category : "laptops"},
-    { label : "Bags", link : "/category/bags", category : "womens-bags"},
-    { label : "Shoes", link : "/category/shoes", category : "mens-shoes"},
-    { label : "Watch", link : "/category/watch", category : "mens-watches"},
+    { label : "Bags", link : "/category/womens-bags", category : "womens-bags"},
+    { label : "Shoes", link : "/category/mens-shoes", category : "mens-shoes"},
+    { label : "Watch", link : "/category/mens-watches", category : "mens-watches"},
     { label : "Sunglasses", link : "/category/sunglasses", category : "sunglasses"},
 ]

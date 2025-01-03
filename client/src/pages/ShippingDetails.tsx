@@ -65,17 +65,20 @@ const ShippingDetails = () => {
     //   console.log(data);
     // }
     if (JSON.stringify(userAddress) !== JSON.stringify(data)) {
-      try{
-        const response = await axios.post(`${conf.dbApi}/users/add-shipping-details`)
-        if(response.data.success){
-          setUser(user.address = response.data.details)
-        }
-      } catch(error){
-        console.log(error);
-      }
-    } 
+      const response = await authService.setShippingDetsils(data);
+      // try {
+      //   const response = await axios.post(
+      //     `${conf.dbApi}/users/add-shipping-details`
+      //   );
+      //   if (response.data.success) {
+      //     setUser((user.address = response.data.details));
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    }
 
-    const cartItems = { items }
+    const cartItems = { items };
     await axios
       .post(`${conf.dbApi}/payment/create-checkout-session`, cartItems, {
         headers: {
@@ -83,7 +86,7 @@ const ShippingDetails = () => {
         },
       })
       .then((response) => {
-        console.log("response",response)
+        console.log("response", response);
         if (response.data.url) {
           window.location.href = response.data.url;
         }

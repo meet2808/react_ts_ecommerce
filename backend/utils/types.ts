@@ -4,6 +4,7 @@ export interface CART_PRODUCT {
     quantity : number;
     price : number;
     thumbnail : string;
+    stock : number;
 }
 
 export interface CartDocument extends CART_PRODUCT {

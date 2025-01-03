@@ -23,9 +23,7 @@ const CartModel = ({ quantity }: PropType) => {
   const userId = JSON.parse(localStorage.getItem("user")!)?.id;
   const { cart, fetchCartItems, setCart } = useCart();
   const { user } = useAuth();
-  const items = cart.items;
-  console.log("cart items", items);
-  
+  const items = cart.items;  
 
   useEffect(() => {
     if (userId) {
@@ -101,6 +99,7 @@ const CartModel = ({ quantity }: PropType) => {
                           quantity={item.quantity}
                           thumbnail={item.thumbnail}
                           title={item.title}
+                          stock={item.stock}
                         />
                       ))}
                     </div>
@@ -108,7 +107,7 @@ const CartModel = ({ quantity }: PropType) => {
                     <div className="flex flex-col gap-2 px-2">
                       <div className="flex flex-row items-center justify-between">
                         <span>Total</span>
-                        <span>₹{parseFloat(cart.totalPrice).toFixed(2)}</span>
+                        <span>₹{parseFloat(cart?.totalPrice).toFixed(2)}</span>
                       </div>
 
                       {/* <Link to="/checkout"> */}

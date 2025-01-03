@@ -1,6 +1,6 @@
-import Book from "@/assets/images/thumbnail.jpg";
 import { BsPlus, BsDash, BsFillTrashFill } from "react-icons/bs";
 import { useCart } from "@/context/useCart";
+import { useToast } from "@/components/ui/use-toast";
 
 const Card = ({
   thumbnail,
@@ -8,21 +8,31 @@ const Card = ({
   title,
   quantity,
   id,
+  stock,
 }: {
   thumbnail: string;
   price: number;
   title: string;
   quantity: number;
   id: number;
+  stock: number;
 }) => {
+  const { toast } = useToast();
   const { addOrUpdateCartItem, removeCartItem, cart } = useCart();
 
   const updateQuantity = (type: string) => {
-    let product = { id, title, price, quantity, thumbnail };
-    if (type == "increment" && quantity >= 1)
-      addOrUpdateCartItem({ ...product, quantity: 1 }, "increment");
-    else if (type == "decrement" && quantity!== 1)
+    let product = { id, title, price, quantity, thumbnail, stock };
+    if (type == "increment" && quantity >= 1) {
+      if (quantity < stock)
+        addOrUpdateCartItem({ ...product, quantity: 1 }, "increment");
+      else if (quantity === stock)
+        toast({
+          title: "Cannot increment: Quantity exceeds available stock.",
+          variant: "destructive",
+        });
+    } else if (type == "decrement" && quantity !== 1){
       addOrUpdateCartItem({ ...product, quantity: 1 }, "decrement");
+    }
   };
   return (
     <>

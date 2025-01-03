@@ -7,8 +7,9 @@ import { Loader, Loader2 } from "lucide-react";
 
 const Category = () => {
   let { categoryName } = useParams<string>();
+  // console.log("url category", categoryName);
   const [category, setCategory] = useState<string>("all");
-  const [prevCategory, setPrevCategory] = useState<string>('');
+  const [prevCategory, setPrevCategory] = useState<string>("");
   const [products, setProducts] = useState<PTYPE>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [initialized, setInitialized] = useState<boolean>(false);
@@ -17,48 +18,30 @@ const Category = () => {
     try {
       setLoading(true);
       const products = await getProducts(category);
+      // console.log("products", products);
       setProducts(products);
       setPrevCategory(category); // Update previous category after successful fetch
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
   }, [category, prevCategory]);
 
   useEffect(() => {
+    const currentCategory = categoryName || "all";
+    setCategory(currentCategory);
     fetchProducts();
-  }, [fetchProducts]);
-
-  // useEffect(() => {
-  //   const handleBeforeUnload = (event : any) => {
-  //     event.preventDefault();
-  //     // Custom logic to handle the refresh
-  //     // Display a confirmation message or perform necessary actions
-  //   };
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //   console.log("after the page refresh");
-  //   setCategory(categoryName!)
-    
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if(categoryName)
-  //     setCategory(categoryName || "all")
-  // }, [categoryName])
+  }, [fetchProducts, categoryName]);
 
   return (
     <section className="flex flex-col lg:flex-row md:flex-col sm:flex-col p-4 gap-14">
       <Sidebar setCategory={setCategory} category={category} />
 
       {loading ? (
-        <div
-          className="m-auto flex flex-row items-center justify-between gap-3 font-bold"
-        >
-          <Loader2 className="animate-spin" width={30} height={30} />Loading...
+        <div className="m-auto flex flex-row items-center justify-between gap-3 font-bold">
+          <Loader2 className="animate-spin" width={30} height={30} />
+          Loading...
         </div>
       ) : (
         <div className="flex flex-col gap-2">

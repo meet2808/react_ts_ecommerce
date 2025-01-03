@@ -14,7 +14,7 @@ const SuggestedProducts = () => {
       </p>
       <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 md:grid-cols-2">
         <Link
-          to={"/category/shoes"}
+          to={"/category/mens-shoes"}
           className={`w-full rounded-lg border bg-white hover:border-blue-600 p-5`}
         >
           <div className="flex flex-col md:h-[230px] md:[300px]-full h-[230px] w-full sm:p-5 p-5 overflow-hidden  dark:bg-black">
@@ -29,7 +29,7 @@ const SuggestedProducts = () => {
         </Link>
 
         <Link
-          to={"/category/laptop"}
+          to={"/category/laptops"}
           className={`w-full rounded-lg border bg-white hover:border-blue-600 p-5`}
         >
           <div className="flex flex-col md:h-[230px] md:[300px]-full h-[230px] w-full sm:p-5 p-5 overflow-hidden  dark:bg-black">
@@ -44,7 +44,7 @@ const SuggestedProducts = () => {
         </Link>
 
         <Link
-          to={"/category/bags"}
+          to={"/category/womens-bags"}
           className={`w-full rounded-lg border bg-white hover:border-blue-600 p-5`}
         >
           <div className="flex flex-col md:h-[230px] md:[300px]-full h-[230px] w-full sm:p-5 p-5 overflow-hidden  dark:bg-black">
@@ -76,7 +76,7 @@ const SuggestedProducts = () => {
         </Link>
 
         <Link
-          to={"/category/watch"}
+          to={"/category/mens-watches"}
           className={`w-full rounded-lg border bg-white hover:border-blue-600 p-5`}
         >
           <div className="flex flex-col md:h-[230px] md:[300px]-full h-[230px] w-full sm:p-5 p-5 overflow-hidden  dark:bg-black">
@@ -91,7 +91,7 @@ const SuggestedProducts = () => {
         </Link>
 
         <Link
-          to={"/category/tshirts"}
+          to={"/category/mens-shirts"}
           className={`w-full rounded-lg border bg-white hover:border-blue-600 p-5`}
         >
           <div className="flex flex-col md:h-[230px] md:[300px]-full h-[230px] w-full sm:p-5 p-5 overflow-hidden  dark:bg-black">
