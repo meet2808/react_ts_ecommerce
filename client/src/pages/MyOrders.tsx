@@ -3,13 +3,16 @@ import axios from "axios";
 import conf from "@/conf/conf";
 import { useAuth } from "@/context/useAuthanticate";
 import { useOrder } from "@/context/useOrder";
+import { log } from "console";
 
 const MyOrders = () => {
   const { user } = useAuth();
   const { orders, fetchOrders } = useOrder();
+  console.log(orders);
+  
   // console.log("orders", orders)
-  const userId = user?.id;
-  const access_token = user?.access_token
+  // const userId = user?.id;
+  // const access_token = user?.access_token
   // console.log("userId", userId)
   // const [userOrders, setUserOrders] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);

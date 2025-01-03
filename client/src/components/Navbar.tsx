@@ -16,9 +16,7 @@ import { useCart } from "@/context/useCart";
 
 const Navbar = () => {
   const {
-    isLoggedIn,
     setIsLoggedIn,
-    user,
     isAuthenticated,
     setIsAuthenticated,
   } = useAuth();

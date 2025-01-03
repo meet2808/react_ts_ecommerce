@@ -37,6 +37,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await orderService.fetchAllOrders(userId);
       let data = response?.data;
+      // data = new Set(data);
       setOrders(data)
     } catch (error) {
       console.log(error);

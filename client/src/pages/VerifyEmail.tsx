@@ -29,7 +29,7 @@ const VerifyEmail = () => {
         <>
             <h1>{response}</h1>
             <p>click below button for verify yourself</p>
-            <button onClick={verifyToken} disabled={token ? false : true}>Verify</button>
+            <button className="bg-slate-900 text-white font-bold py-3 px-6 cursor-pointer" onClick={verifyToken} disabled={token ? false : true}>Verify</button>
         </>
     )
 }
